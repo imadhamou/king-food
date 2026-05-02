@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>King Food - الجزائر العاصمة</title>
+  <title>King Food - الجزائر</title>
 
   <style>
     body { margin: 0; font-family: Arial, sans-serif; background: #0f0f0f; color: white; scroll-behavior: smooth; }
@@ -30,10 +30,11 @@
     #orderOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; overflow-y: auto; }
     .order-modal { background: #1c1c1c; max-width: 500px; margin: 20px auto; padding: 25px; border-radius: 15px; border: 2px solid #ff6600; }
     
-    .cart-item { display: flex; justify-content: space-between; background: #222; padding: 10px; margin: 5px 0; border-radius: 5px; }
+    .cart-item { display: flex; justify-content: space-between; background: #222; padding: 10px; margin: 5px 0; border-radius: 5px; align-items: center; }
     input, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: white; box-sizing: border-box; }
+    
     .total-box { background: #333; padding: 15px; border-radius: 10px; margin: 15px 0; border-right: 5px solid #00ff88; }
-    .confirm-btn { background: #00ff88; color: black; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; }
+    .confirm-btn { background: #25d366; color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 1.1em; }
     
     .map-btn { display: inline-block; margin-top: 20px; padding: 12px 25px; background: #00aaff; border-radius: 25px; color: white; text-decoration: none; font-weight: bold; }
   </style>
@@ -92,14 +93,18 @@
   <div class="order-modal">
     <h2 style="color:#ff6600; text-align:center;">مراجعة طلبك</h2>
     <div id="cartList"></div>
+    
     <div class="total-box">
       <div>سعر الوجبات: <span id="subTotal">0</span> دج</div>
       <div>التوصيل: 500 دج</div>
       <hr>
       <h3 style="margin:0;">الإجمالي: <span id="finalTotal" style="color:#00ff88;">0</span> دج</h3>
     </div>
+
     <input type="text" id="cName" placeholder="الاسم واللقب">
     <input type="tel" id="cPhone" placeholder="رقم الهاتف">
+    
+    <label>دائرة التوصيل:</label>
     <select id="cDistrict">
       <option value="زرالدة">01 - دائرة زرالدة</option>
       <option value="الشراقة">02 - دائرة الشراقة</option>
@@ -115,15 +120,16 @@
       <option value="الدار البيضاء">12 - دائرة الدار البيضاء</option>
       <option value="الرويبة">13 - دائرة الرويبة</option>
     </select>
-    <button class="confirm-btn" onclick="submitFinalOrder()">تأكيد الطلب ✅</button>
-    <button style="background:none; color:white; border:none; margin-top:10px; cursor:pointer;" onclick="hideCart()">إغلاق</button>
+
+    <button class="confirm-btn" onclick="submitFinalOrder()">تأكيد وإرسال الطلب (WhatsApp) ✅</button>
+    <button style="background:none; color:white; border:none; margin-top:15px; cursor:pointer; width:100%;" onclick="hideCart()">إلغاء</button>
   </div>
 </div>
 
 <div class="container" id="contact">
     <div class="title">اتصل بنا</div>
     <p>📍 برج البحري - الجزائر العاصمة</p>
-    <p>📞 0554786108</p>
+    <p>📞 0774015797</p>
     <a class="map-btn" target="_blank" href="https://www.google.com/maps/place/King+food+116/@36.7850314,3.2492391,92m/data=!3m1!1e3!4m6!3m5!1s0x128e4f00477f7477:0xac79b52c39605e5e!8m2!3d36.7849377!4d3.2494808!16s%2Fg%2F11xt329jkq">فتح الموقع على الخريطة 📍</a>
 </div>
 
@@ -131,21 +137,67 @@
 
 <script>
 let cart = [];
-function addToCart(name, price) { cart.push({name, price}); document.getElementById('cartCount').innerText = cart.length; }
+
+function addToCart(name, price) {
+    cart.push({name, price});
+    document.getElementById('cartCount').innerText = cart.length;
+}
+
 function showCart() {
     if(cart.length === 0) return alert("السلة فارغة!");
-    let list = document.getElementById('cartList'); list.innerHTML = ""; let total = 0;
-    cart.forEach((item, i) => { total += item.price; list.innerHTML += `<div class="cart-item"><span>${item.name}</span><span onclick="cart.splice(${i},1);showCart();document.getElementById('cartCount').innerText=cart.length;" style="color:red;cursor:pointer;">حذف</span></div>`; });
-    document.getElementById('subTotal').innerText = total; document.getElementById('finalTotal').innerText = total + 500;
+    let list = document.getElementById('cartList');
+    list.innerHTML = "";
+    let total = 0;
+
+    cart.forEach((item, index) => {
+        total += item.price;
+        list.innerHTML += `
+            <div class="cart-item">
+                <span>${item.name} (${item.price} دج)</span>
+                <span onclick="cart.splice(${index},1);showCart();document.getElementById('cartCount').innerText=cart.length;" style="color:red;cursor:pointer;font-weight:bold;">حذف</span>
+            </div>`;
+    });
+
+    document.getElementById('subTotal').innerText = total;
+    document.getElementById('finalTotal').innerText = total + 500;
     document.getElementById('orderOverlay').style.display = 'block';
 }
-function hideCart() { document.getElementById('orderOverlay').style.display = 'none'; }
+
+function hideCart() {
+    document.getElementById('orderOverlay').style.display = 'none';
+}
+
 function submitFinalOrder() {
     const name = document.getElementById('cName').value;
-    if(!name || !document.getElementById('cPhone').value) return alert("يرجى ملء البيانات!");
-    alert(`شكراً ${name}! تم استلام طلبك بنجاح.`);
-    cart = []; document.getElementById('cartCount').innerText = 0; hideCart();
+    const phone = document.getElementById('cPhone').value;
+    const district = document.getElementById('cDistrict').value;
+    const total = document.getElementById('finalTotal').innerText;
+
+    if(!name || !phone) {
+        alert("يرجى ملء الاسم ورقم الهاتف!");
+        return;
+    }
+
+    let itemsSummary = {};
+    cart.forEach(item => {
+        itemsSummary[item.name] = (itemsSummary[item.name] || 0) + 1;
+    });
+
+    let itemsStr = Object.keys(itemsSummary).map(key => `🔸 ${key} (العدد: ${itemsSummary[key]})`).join("%0A");
+
+    let message = `*طلب جديد من King Food* 👑%0A%0A` +
+                  `*👤 الزبون:* ${name}%0A` +
+                  `*📞 الهاتف:* ${phone}%0A` +
+                  `*📍 العنوان:* ${district}%0A%0A` +
+                  `*🍔 الوجبات:*%0A${itemsStr}%0A%0A` +
+                  `*💰 الإجمالي النهائي:* ${total} دج%0A` +
+                  `---------------------------`;
+
+    window.open(`https://wa.me/213774015797?text=${message}`, '_blank');
+
+    cart = [];
+    document.getElementById('cartCount').innerText = 0;
+    hideCart();
 }
 </script>
 </body>
-</html>
