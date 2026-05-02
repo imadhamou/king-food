@@ -3,118 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>King Food</title>
+  <title>King Food - الجزائر العاصمة</title>
 
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0f0f0f;
-      color: white;
-    }
+    body { margin: 0; font-family: Arial, sans-serif; background: #0f0f0f; color: white; scroll-behavior: smooth; }
+    header { background: linear-gradient(90deg,#ff6600,#ff2200); padding: 25px; text-align: center; font-size: 32px; font-weight: bold; }
+    nav { display: flex; justify-content: center; background: #1a1a1a; flex-wrap: wrap; position: sticky; top: 0; z-index: 100; }
+    nav a { padding: 15px 20px; color: white; text-decoration: none; font-weight: bold; }
+    nav a:hover { background: #ff6600; }
 
-    header {
-      background: linear-gradient(90deg,#ff6600,#ff2200);
-      padding: 25px;
-      text-align: center;
-      font-size: 32px;
-      font-weight: bold;
-    }
+    .hero { height: 40vh; background: url('https://images.unsplash.com/photo-1600891964599-f61ba0e24092') center/cover; display: flex; justify-content: center; align-items: center; text-align: center; }
+    .hero h1 { background: rgba(0,0,0,0.6); padding: 20px; border-radius: 10px; }
 
-    nav {
-      display: flex;
-      justify-content: center;
-      background: #1a1a1a;
-      flex-wrap: wrap;
-    }
+    .container { padding: 50px; max-width: 1200px; margin: auto; }
+    .title { color: #ff6600; font-size: 28px; margin-bottom: 20px; border-bottom: 2px solid #ff6600; display: inline-block; }
 
-    nav a {
-      padding: 15px 20px;
-      color: white;
-      text-decoration: none;
-    }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(250px,1fr)); gap: 20px; }
+    .card { background: #1c1c1c; padding: 20px; border-radius: 12px; text-align: center; transition: 0.3s; border: 1px solid #333; }
+    .card:hover { border-color: #ff6600; transform: translateY(-5px); }
 
-    nav a:hover {
-      background: #ff6600;
-    }
+    .price { color: #00ff88; margin-top: 10px; font-weight: bold; }
 
-    .hero {
-      height: 80vh;
-      background: url('https://images.unsplash.com/photo-1600891964599-f61ba0e24092') center/cover;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
+    .cart-counter { position: fixed; bottom: 20px; left: 20px; background: #00ff88; color: black; padding: 15px 25px; border-radius: 30px; font-weight: bold; cursor: pointer; z-index: 999; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+    .add-btn { background: #ff6600; color: white; border: none; padding: 10px; width: 100%; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
 
-    .hero h1 {
-      background: rgba(0,0,0,0.6);
-      padding: 20px;
-      border-radius: 10px;
-    }
-
-    .container {
-      padding: 50px;
-      max-width: 1200px;
-      margin: auto;
-    }
-
-    .title {
-      color: #ff6600;
-      font-size: 28px;
-      margin-bottom: 20px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
-      gap: 20px;
-    }
-
-    .card {
-      background: #1c1c1c;
-      padding: 20px;
-      border-radius: 12px;
-      text-align: center;
-    }
-
-    .price {
-      color: #00ff88;
-      margin-top: 10px;
-      font-weight: bold;
-    }
-
-    button {
-      margin-top: 10px;
-      padding: 10px 20px;
-      border: none;
-      background: #ff6600;
-      color: white;
-      border-radius: 20px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #ff2200;
-    }
-
-    .map-btn {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 12px 25px;
-      background: #00aaff;
-      border-radius: 25px;
-      color: white;
-      text-decoration: none;
-    }
-
-    footer {
-      background: black;
-      text-align: center;
-      padding: 20px;
-      margin-top: 40px;
-      color: #aaa;
-    }
+    #orderOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; overflow-y: auto; }
+    .order-modal { background: #1c1c1c; max-width: 500px; margin: 20px auto; padding: 25px; border-radius: 15px; border: 2px solid #ff6600; }
+    
+    .cart-item { display: flex; justify-content: space-between; background: #222; padding: 10px; margin: 5px 0; border-radius: 5px; }
+    input, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: white; box-sizing: border-box; }
+    .total-box { background: #333; padding: 15px; border-radius: 10px; margin: 15px 0; border-right: 5px solid #00ff88; }
+    .confirm-btn { background: #00ff88; color: black; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; }
+    
+    .map-btn { display: inline-block; margin-top: 20px; padding: 12px 25px; background: #00aaff; border-radius: 25px; color: white; text-decoration: none; font-weight: bold; }
   </style>
 </head>
 
@@ -123,91 +44,108 @@
 <header>👑 King Food</header>
 
 <nav>
-  <a href="#about">About</a>
-  <a href="#menu">Menu</a>
-  <a href="#features">Features</a>
-  <a href="#contact">Contact</a>
+  <a href="#about">من نحن</a>
+  <a href="#menu">القائمة</a>
+  <a href="#contact">اتصل بنا</a>
 </nav>
 
 <section class="hero">
-  <h1>أفضل تجربة أكلات سريعة 🔥</h1>
+  <h1>أفضل تجربة أكلات سريعة في الجزائر 🔥</h1>
 </section>
 
+<div class="cart-counter" onclick="showCart()">
+  🛒 السلة (<span id="cartCount">0</span>) - إتمام الطلب
+</div>
+
 <div class="container" id="about">
-  <div class="title">About</div>
-  <p>
-    King Food هو مطعم أكلات سريعة يقدم برغر، بيتزا، شاورما وسندويشات.
-    نركز على الجودة، السرعة في الخدمة، والمعاملة الجيدة مع الزبائن.
-    كل الأطعمة تُحضّر طازجة يوميًا لضمان أفضل طعم ممكن.
-  </p>
+  <div class="title">من نحن</div>
+  <p>مطعم متخصص في الأكلات السريعة، نركز على الجودة، السرعة في الخدمة، والمعاملة الممتازة مع الزبائن.</p>
 </div>
 
 <div class="container" id="menu">
-  <div class="title">Menu</div>
+  <div class="title">القائمة</div>
   <div class="grid">
-
     <div class="card">
       <h3>Double Burger</h3>
-      <p>لحم + جبن + صوص خاص</p>
       <div class="price">700 دج</div>
-      <button onclick="order('Double Burger')">اطلب</button>
+      <button class="add-btn" onclick="addToCart('Double Burger', 700)">+ أضف للسلة</button>
     </div>
-
     <div class="card">
       <h3>Family Pizza</h3>
-      <p>دجاج + خضر + جبن</p>
       <div class="price">1200 دج</div>
-      <button onclick="order('Pizza')">اطلب</button>
+      <button class="add-btn" onclick="addToCart('Family Pizza', 1200)">+ أضف للسلة</button>
     </div>
-
     <div class="card">
       <h3>Shawarma</h3>
-      <p>دجاج + بطاطا + صوص</p>
       <div class="price">500 دج</div>
-      <button onclick="order('Shawarma')">اطلب</button>
+      <button class="add-btn" onclick="addToCart('Shawarma', 500)">+ أضف للسلة</button>
     </div>
-
     <div class="card">
       <h3>Fries</h3>
-      <p>بطاطا مقلية مقرمشة</p>
       <div class="price">250 دج</div>
-      <button onclick="order('Fries')">اطلب</button>
+      <button class="add-btn" onclick="addToCart('Fries', 250)">+ أضف للسلة</button>
     </div>
-
   </div>
 </div>
 
-<div class="container" id="features">
-  <div class="title">Features</div>
-  <div class="grid">
-    <div class="card">⚡ خدمة سريعة</div>
-    <div class="card">🍔 أكل طازج</div>
-    <div class="card">😊 معاملة ممتازة</div>
-    <div class="card">💰 أسعار مناسبة</div>
+<div id="orderOverlay">
+  <div class="order-modal">
+    <h2 style="color:#ff6600; text-align:center;">مراجعة طلبك</h2>
+    <div id="cartList"></div>
+    <div class="total-box">
+      <div>سعر الوجبات: <span id="subTotal">0</span> دج</div>
+      <div>التوصيل: 500 دج</div>
+      <hr>
+      <h3 style="margin:0;">الإجمالي: <span id="finalTotal" style="color:#00ff88;">0</span> دج</h3>
+    </div>
+    <input type="text" id="cName" placeholder="الاسم واللقب">
+    <input type="tel" id="cPhone" placeholder="رقم الهاتف">
+    <select id="cDistrict">
+      <option value="زرالدة">01 - دائرة زرالدة</option>
+      <option value="الشراقة">02 - دائرة الشراقة</option>
+      <option value="درارية">03 - دائرة درارية</option>
+      <option value="بئر توتة">04 - دائرة بئر توتة</option>
+      <option value="بئر مراد رايس">05 - دائرة بئر مراد رايس</option>
+      <option value="بوزريعة">06 - دائرة بوزريعة</option>
+      <option value="باب الوادي">07 - دائرة باب الوادي</option>
+      <option value="حسين داي">08 - دائرة حسين داي</option>
+      <option value="سيدي أمحمد">09 - دائرة سيدي أمحمد</option>
+      <option value="الحراش">10 - دائرة الحراش</option>
+      <option value="براقي">11 - دائرة براقي</option>
+      <option value="الدار البيضاء">12 - دائرة الدار البيضاء</option>
+      <option value="الرويبة">13 - دائرة الرويبة</option>
+    </select>
+    <button class="confirm-btn" onclick="submitFinalOrder()">تأكيد الطلب ✅</button>
+    <button style="background:none; color:white; border:none; margin-top:10px; cursor:pointer;" onclick="hideCart()">إغلاق</button>
   </div>
 </div>
 
 <div class="container" id="contact">
-  <div class="title">Contact</div>
-  <p>📍 برج البحري - الجزائر</p>
-  <p>📞 0554786108</p>
-
-  <a class="map-btn" target="_blank"
-  href="https://www.google.com/maps/place/King+food+116/@36.784993,3.2495491,66m/data=!3m1!1e3!4m6!3m5!1s0x128e4f00477f7477:0xac79b52c39605e5e!8m2!3d36.7849377!4d3.2494808!16s%2Fg%2F11xt329jkq">
-    فتح الموقع 📍
-  </a>
-
+    <div class="title">اتصل بنا</div>
+    <p>📍 برج البحري - الجزائر العاصمة</p>
+    <p>📞 0554786108</p>
+    <a class="map-btn" target="_blank" href="https://www.google.com/maps/place/King+food+116/@36.7850314,3.2492391,92m/data=!3m1!1e3!4m6!3m5!1s0x128e4f00477f7477:0xac79b52c39605e5e!8m2!3d36.7849377!4d3.2494808!16s%2Fg%2F11xt329jkq">فتح الموقع على الخريطة 📍</a>
 </div>
 
-<footer>
-  © 2026 King Food - جميع الحقوق محفوظة
-</footer>
+<footer>© 2026 King Food - جميع الحقوق محفوظة</footer>
 
 <script>
-function order(item){
-  alert("تم طلب: " + item);
+let cart = [];
+function addToCart(name, price) { cart.push({name, price}); document.getElementById('cartCount').innerText = cart.length; }
+function showCart() {
+    if(cart.length === 0) return alert("السلة فارغة!");
+    let list = document.getElementById('cartList'); list.innerHTML = ""; let total = 0;
+    cart.forEach((item, i) => { total += item.price; list.innerHTML += `<div class="cart-item"><span>${item.name}</span><span onclick="cart.splice(${i},1);showCart();document.getElementById('cartCount').innerText=cart.length;" style="color:red;cursor:pointer;">حذف</span></div>`; });
+    document.getElementById('subTotal').innerText = total; document.getElementById('finalTotal').innerText = total + 500;
+    document.getElementById('orderOverlay').style.display = 'block';
+}
+function hideCart() { document.getElementById('orderOverlay').style.display = 'none'; }
+function submitFinalOrder() {
+    const name = document.getElementById('cName').value;
+    if(!name || !document.getElementById('cPhone').value) return alert("يرجى ملء البيانات!");
+    alert(`شكراً ${name}! تم استلام طلبك بنجاح.`);
+    cart = []; document.getElementById('cartCount').innerText = 0; hideCart();
 }
 </script>
-
 </body>
 </html>
